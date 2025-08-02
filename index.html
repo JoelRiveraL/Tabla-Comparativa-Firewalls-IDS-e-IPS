@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparativa Avanzada de Firewalls, IDS e IPS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+            color: #2d3748;
+        }
+        
+
+        /* Opción 3: Nunito */
+        /*
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f5f7fa;
+            color: #2d3748;
+        }
+        */
+
+        /* Opción 4: Merriweather */
+        /*
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap');
+        body {
+            font-family: 'Merriweather', serif;
+            background-color: #f5f7fa;
+            color: #2d3748;
+        }
+        */
+
+        /* Opción 5: Quicksand */
+        /*
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap');
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #f5f7fa;
+            color: #2d3748;
+        }
+        */
+
+        
+        .header {
+            background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+            padding: 1.5rem;
+            color: white;
+            text-align: center;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f7fa 100%);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.15);
+            border: 2px solid #bfdbfe;
+            margin-bottom: 30px;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.1);
+        }
+        
+        th {
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+            color: white;
+            font-weight: 600;
+            text-align: left;
+            padding: 16px 20px;
+            font-size: 14px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            border-bottom: 3px solid #1d4ed8;
+        }
+        
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e0f2fe;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        tr:nth-child(even) {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f7fa 50%, #f0f9ff 100%);
+        }
+        
+        tr:hover {
+            background: linear-gradient(135deg, #dbeafe 0%, #b3e5fc 50%, #dbeafe 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2);
+        }
+        
+        .section-title {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e40af 100%);
+            color: white;
+            font-weight: 700;
+            text-align: center;
+            font-size: 18px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-bottom: 4px solid #1e3a8a;
+            position: relative;
+        }
+        
+        .section-title::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        /* Estilos para listas dentro de las tablas */
+        td ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        td ul li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+            color: #374151;
+        }
+        
+        td ul li::marker {
+            color: #3b82f6;
+            font-weight: bold;
+        }
+        
+        /* Estilos para celdas con font-medium (tipos de sistemas) */
+        td.font-medium {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            font-weight: 700;
+            color: #1e40af;
+            border-left: 4px solid #3b82f6;
+            font-size: 15px;
+        }
+        
+        /* Efecto especial para la primera columna */
+        table tr td:first-child {
+            position: relative;
+        }
+        
+        table tr td:first-child::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        }
+        
+        .references {
+            background-color: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-top: 30px;
+        }
+        
+        .references h2 {
+            color: #2c5282;
+            border-bottom: 2px solid #4299e1;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .references ol {
+            padding-left: 20px;
+        }
+        
+        .references li {
+            margin-bottom: 8px;
+        }
+        
+        .comparison-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-section h2 {
+            color: #2c5282;
+            border-bottom: 2px solid #4299e1;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .tag:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .tag-high {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            border-color: #fca5a5;
+        }
+        
+        .tag-medium {
+            background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+            color: white;
+            border-color: #fed7aa;
+        }
+        
+        .tag-low {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            border-color: #86efac;
+        }
+        
+        @media print {
+            body {
+                font-size: 12px;
+            }
+            
+            .header {
+                background: #2c5282 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            th, .section-title {
+                background-color: #2c5282 !important;
+                color: white !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            tr:nth-child(even) {
+                background-color: #edf2f7 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 bg-white">
+    <div class="header rounded-t-lg mb-6">
+        <div class="flex justify-center mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12">
+                <path d="M11.7 2.805a.75.75 0 01.6 0A60.65 60.65 0 0122.83 8.72a.75.75 0 01-.231 1.337 49.949 49.949 0 00-9.902 3.912l-.003.002-.34.18a.75.75 0 01-.707 0A50.009 50.009 0 007.5 12.174v-.224c0-.131.067-.248.172-.311a54.614 54.614 0 014.653-2.52.75.75 0 00-.65-1.352 56.129 56.129 0 00-4.78 2.589 1.858 1.858 0 00-.859 1.228 49.803 49.803 0 00-4.634-1.527.75.75 0 01-.231-1.337A60.653 60.653 0 0111.7 2.805z" />
+                <path d="M13.06 15.473a48.45 48.45 0 017.666-3.282c.134 1.414.22 2.843.255 4.285a.75.75 0 01-.46.71 47.878 47.878 0 00-8.105 4.342.75.75 0 01-.832 0 47.877 47.877 0 00-8.104-4.342.75.75 0 01-.461-.71c.035-1.442.121-2.87.255-4.286A48.4 48.4 0 016 13.18v1.27a1.5 1.5 0 00-.14 2.508c-.09.38-.222.753-.397 1.11.452.213.901.434 1.346.661a6.729 6.729 0 00.551-1.608 1.5 1.5 0 00.14-2.67v-.645a48.549 48.549 0 013.44 1.668 2.25 2.25 0 002.12 0z" />
+                <path d="M4.462 19.462c.42-.419.753-.89 1-1.394.453.213.902.434 1.347.661a6.743 6.743 0 01-1.286 1.794.75.75 0 11-1.06-1.06z" />
+            </svg>
+        </div>
+        <h1 class="text-2xl font-bold mb-1">Universidad de las Fuerzas Armadas</h1>
+        <h2 class="text-xl mb-1">Departamento de Ciencias de la Computación</h2>
+        <p class="text-lg mb-1">Ingeniería de la Seguridad - NRC: 23354</p>
+        <p class="text-lg">Estudiante: Joel Alessandro Rivera López</p>
+    </div>
+
+    <div class="max-w-8xl mx-auto bg-white rounded-lg shadow-lg p-6 mb-8">
+        <h1 class="text-3xl font-bold text-center mb-6 text-blue-800">Tabla Comparativa: Firewalls, IDS e IPS</h1>
+        
+        <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <h2 class="text-xl font-semibold mb-3 text-blue-800">Introducción</h2>
+            <p class="mb-3">Los ciberataques, cada vez más complejos y frecuentes, como ransomware, malware y amenazas avanzadas, han hecho imprescindible que las empresas protejan sus sistemas con arquitecturas de seguridad robustas.</p>
+            
+            <p class="mb-3">Dentro de este contexto, tecnologías clave como firewalls de próxima generación, sistemas de detección de intrusiones (IDS) y sistemas de prevención de intrusiones (IPS) son fundamentales. Los firewalls controlan el tráfico de red, los IDS detectan anomalías y los IPS neutralizan amenazas en tiempo real, formando una defensa integral.</p>
+            
+            <p class="mb-3">Elegir estas herramientas depende del tamaño de la empresa, su infraestructura, presupuesto y normativas. Este estudio analiza las principales soluciones de firewalls, IDS e IPS, sus características, ventajas y limitaciones. El objetivo es comprender mediante un marco de referencia integral que facilite la toma de decisiones informadas para el diseño e implementación de estrategias de protección de seguridad informática.</p>
+        </div>
+        
+        <div class="table-container">
+            <table class="w-full mb-8">
+                <thead>
+                    <tr>
+                        <th colspan="6" class="section-title text-lg">FIREWALLS</th>
+                    </tr>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Descripción</th>
+                        <th>Características Diferenciadoras</th>
+                        <th>Ventajas</th>
+                        <th>Desventajas</th>
+                        <th>Ejemplos Reales</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="font-medium">Firewall de Filtrado de Paquetes (Packet Filtering)</td>
+                        <td>Tecnología de seguridad perimetral que realiza evaluación granular de tramas de datos mediante análisis de cabeceras de protocolo, aplicando políticas de control de acceso predefinidas para autorizar o denegar el tránsito de información a través de la infraestructura de red.</td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Procesamiento en nivel de red (Layer 3 OSI) con análisis de cabeceras IP</li>
+                                <li>Evaluación de metadatos: direcciones origen/destino, puertos TCP/UDP y tipos de protocolo</li>
+                                <li>Arquitectura sin estado que no conserva información de sesiones previas</li>
+                                <li>Implementación mediante listas de control de acceso (ACL) configurables</li>
+                                <li>Funcionamiento basado en reglas estáticas sin contexto de conexión</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Eficiencia computacional superior con mínima utilización de memoria</li>
+                                <li>Throughput elevado ideal para entornos de alto volumen</li>
+                                <li>Configuración simplificada con curva de aprendizaje reducida</li>
+                                <li>Inversión económica mínima para implementación básica</li>
+                                <li>Operación transparente sin interferencia en aplicaciones</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Vulnerable a IP spoofing</li>
+                                <li>No inspecciona contenido de paquetes</li>
+                                <li>No detecta ataques a nivel de aplicación</li>
+                                <li>Reglas complejas difíciles de mantener</li>
+                                <li>Limitado para protocolos dinámicos (FTP, SIP)</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>iptables (Linux)</li>
+                                <li>PF (BSD)</li>
+                                <li>Windows Defender Firewall</li>
+                                <li>Cisco ACL</li>
+                                <li>Juniper Packet Filter</li>
+                            </ul>
+                            <div class="mt-2">
+                                <span class="tag tag-low">Complejidad: Baja</span>
+                                <span class="tag tag-low">Costo: Bajo</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">Firewall de Inspección de Estado (Stateful Inspection)</td>
+                        <td>Sistema de protección de red avanzado que rastrea dinámicamente el estado de conexiones TCP/UDP activas, manteniendo un registro contextual de sesiones para tomar decisiones de filtrado basadas en el historial de comunicaciones y la integridad de los flujos de datos.</td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Almacenamiento dinámico de estados de conexión en tablas de memoria</li>
+                                <li>Funcionamiento en capas de red y transporte (L3-L4) del stack TCP/IP</li>
+                                <li>Correlación de paquetes con sesiones establecidas previamente</li>
+                                <li>Validación de secuencias numéricas TCP y control de flags de estado</li>
+                                <li>Implementación de temporizadores para limpieza automática de conexiones obsoletas</li>
+                                <li>Verificación de conformidad con especificaciones de protocolo</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Robustez de seguridad incrementada comparada con filtrado estático</li>
+                                <li>Mitigación efectiva de ataques de suplantación de identidad</li>
+                                <li>Balance óptimo entre rendimiento y capacidad de protección</li>
+                                <li>Compatibilidad nativa con protocolos de asignación dinámica de puertos</li>
+                                <li>Optimización del procesamiento de tráfico legítimo autorizado</li>
+                                <li>Simplificación de políticas mediante contexto de sesión</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Mayor consumo de recursos (memoria)</li>
+                                <li>Vulnerable a ataques de fragmentación</li>
+                                <li>No inspecciona contenido de aplicación</li>
+                                <li>Vulnerable a ataques de inundación de estado</li>
+                                <li>Limitado contra amenazas avanzadas</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Cisco ASA</li>
+                                <li>Palo Alto Networks (modo básico)</li>
+                                <li>Check Point Firewall</li>
+                                <li>Fortinet FortiGate</li>
+                                <li>SonicWall TZ Series</li>
+                                <li>pfSense</li>
+                            </ul>
+                            <div class="mt-2">
+                                <span class="tag tag-medium">Complejidad: Media</span>
+                                <span class="tag tag-medium">Costo: Medio</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">Firewall de Aplicación (Proxy)</td>
+                        <td>Solución de seguridad de alto nivel que funciona como gateway de aplicación, interceptando completamente las comunicaciones cliente-servidor. Ejecuta terminación de sesiones originales y establece nuevas conexiones independientes, permitiendo inspección exhaustiva del contenido de aplicación y implementación de políticas granulares de control.</td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Procesamiento completo en capa de aplicación (Layer 7) con análisis semántico</li>
+                                <li>Inspección integral del payload de datos y contenido de mensajes</li>
+                                <li>Capacidades de autenticación y autorización de usuarios integradas</li>
+                                <li>Implementación de sistemas de caché para optimización de rendimiento</li>
+                                <li>Ocultación total de la arquitectura de red interna mediante aislamiento</li>
+                                <li>Funcionalidades de normalización y sanitización de protocolos</li>
+                                <li>Capacidades de descifrado e inspección de túneles SSL/TLS</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Nivel de protección máximo con control granular de aplicaciones</li>
+                                <li>Capacidades avanzadas de filtrado de contenido malicioso</li>
+                                <li>Enmascaramiento completo de topología de red empresarial</li>
+                                <li>Integración de sistemas de autenticación empresarial</li>
+                                <li>Detección proactiva de malware embebido en transferencias</li>
+                                <li>Gobierno y control detallado de aplicaciones web corporativas</li>
+                                <li>Generación de logs detallados para auditoría y compliance</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Alto consumo de recursos</li>
+                                <li>Latencia significativa</li>
+                                <li>Puede requerir configuración por protocolo</li>
+                                <li>Complejidad de implementación</li>
+                                <li>Problemas con aplicaciones propietarias</li>
+                                <li>Costo elevado</li>
+                                <li>Punto único de fallo potencial</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Squid Proxy</li>
+                                <li>Blue Coat ProxySG</li>
+                                <li>Microsoft TMG (descontinuado)</li>
+                                <li>Zscaler</li>
+                                <li>F5 BIG-IP ASM</li>
+                                <li>Barracuda Web Application Firewall</li>
+                                <li>Sophos Web Appliance</li>
+                            </ul>
+                            <div class="mt-2">
+                                <span class="tag tag-high">Complejidad: Alta</span>
+                                <span class="tag tag-high">Costo: Alto</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">Firewall de Nueva Generación (NGFW)</td>
+                        <td>Plataforma de seguridad unificada que consolida múltiples funciones de protección en una arquitectura integrada. Incorpora capacidades tradicionales de filtrado con tecnologías emergentes como análisis profundo de paquetes, sistemas de prevención de intrusiones, identificación de aplicaciones y correlación con inteligencia de amenazas en tiempo real.</td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Convergencia de múltiples motores de seguridad en plataforma única</li>
+                                <li>Reconocimiento y clasificación automática de aplicaciones de red</li>
+                                <li>Capacidades nativas de descifrado e inspección de tráfico cifrado</li>
+                                <li>Integración con feeds de inteligencia de amenazas globales</li>
+                                <li>Motor de prevención de intrusiones integrado con actualizaciones automáticas</li>
+                                <li>Funcionalidades de filtrado de URLs con categorización dinámica</li>
+                                <li>Capacidades de sandboxing para análisis comportamental de amenazas</li>
+                                <li>Sistema de identificación de usuarios con integración a directorios empresariales</li>
+                                <li>Motor antivirus de red con detección heurística</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Consolidación integral de múltiples funciones de seguridad</li>
+                                <li>Visibilidad granular de aplicaciones, usuarios y contenido</li>
+                                <li>Capacidades de detección de amenazas avanzadas y persistentes</li>
+                                <li>Simplificación operativa mediante gestión centralizada</li>
+                                <li>Administración unificada con interfaces de gestión integradas</li>
+                                <li>Análisis contextual avanzado para reducción de falsos positivos</li>
+                                <li>Protección proactiva contra amenazas emergentes y day-zero</li>
+                                <li>Optimización de costos operativos mediante consolidación tecnológica</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Alto costo de adquisición</li>
+                                <li>Complejidad de configuración</li>
+                                <li>Requiere personal especializado</li>
+                                <li>Posible impacto en rendimiento</li>
+                                <li>Dependencia de actualizaciones</li>
+                                <li>Posibles falsos positivos</li>
+                                <li>Problemas con tráfico cifrado</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Palo Alto Networks PA Series</li>
+                                <li>Cisco Firepower</li>
+                                <li>Fortinet FortiGate</li>
+                                <li>Check Point NGFW</li>
+                                <li>Sophos XG Firewall</li>
+                                <li>WatchGuard Firebox</li>
+                                <li>Juniper SRX Series</li>
+                                <li>Barracuda CloudGen Firewall</li>
+                            </ul>
+                            <div class="mt-2">
+                                <span class="tag tag-high">Complejidad: Alta</span>
+                                <span class="tag tag-high">Costo: Alto</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">Firewall basado en la Nube</td>
+                        <td>Arquitectura de seguridad distribuida implementada como servicio en infraestructura cloud, proporcionando capacidades de protección perimetral para recursos híbridos y multi-cloud. Ofrece funcionalidades de firewall mediante modelo de entrega SaaS, eliminando la necesidad de hardware físico en las instalaciones del cliente.</td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Despliegue virtualizado sin dependencia de infraestructura física</li>
+                                <li>Escalamiento automático basado en demanda de tráfico</li>
+                                <li>Protección distribuida para workloads geográficamente dispersos</li>
+                                <li>Modelo de facturación basado en consumo y utilización</li>
+                                <li>Actualizaciones y patches automatizados sin intervención manual</li>
+                                <li>Integración nativa con servicios y APIs de proveedores cloud</li>
+                                <li>Capacidades de protección para interfaces de programación</li>
+                                <li>Mitigación integrada de ataques de denegación de servicio distribuido</li>
+                                <li>Protección especializada para workforce remoto y móvil</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Reducción significativa de inversión en capital de infraestructura</li>
+                                <li>Mantenimiento automático con actualizaciones transparentes</li>
+                                <li>Capacidad de protección global con presencia distribuida</li>
+                                <li>Elasticidad operativa con adaptación dinámica a demanda</li>
+                                <li>Minimización de overhead operativo y administrativo</li>
+                                <li>Time-to-market acelerado con implementación inmediata</li>
+                                <li>Soporte nativo para usuarios distribuidos y remotos</li>
+                                <li>Garantías de disponibilidad con redundancia geográfica</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Dependencia de conectividad a Internet</li>
+                                <li>Preocupaciones de privacidad/soberanía de datos</li>
+                                <li>Latencia potencial</li>
+                                <li>Costos acumulativos a largo plazo</li>
+                                <li>Control limitado sobre la infraestructura</li>
+                                <li>Posibles problemas de cumplimiento normativo</li>
+                                <li>Vendor lock-in</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>AWS Network Firewall</li>
+                                <li>Azure Firewall</li>
+                                <li>Google Cloud Armor</li>
+                                <li>Cloudflare Magic Firewall</li>
+                                <li>Zscaler Cloud Firewall</li>
+                                <li>Cisco Umbrella</li>
+                                <li>Palo Alto Prisma Access</li>
+                                <li>Akamai Enterprise Application Access</li>
+                            </ul>
+                            <div class="mt-2">
+                                <span class="tag tag-medium">Complejidad: Media</span>
+                                <span class="tag tag-medium">Costo: Variable</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">Firewall de Microsegmentación</td>
+                        <td>Tecnología de seguridad avanzada que implementa controles de acceso granulares a nivel de workload individual, creando perímetros de seguridad dinámicos alrededor de cada componente de aplicación. Permite el aislamiento selectivo y control de flujos de comunicación entre elementos dentro de la misma infraestructura de red.</td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Aplicación de políticas de seguridad a nivel de carga de trabajo específica</li>
+                                <li>Implementación de controles basados en identidad y contexto</li>
+                                <li>Funcionamiento independiente de la arquitectura física de red</li>
+                                <li>Monitoreo detallado de comunicaciones laterales (east-west traffic)</li>
+                                <li>Automatización de políticas mediante integración con orquestadores</li>
+                                <li>Integración nativa con plataformas de virtualización y contenedores</li>
+                                <li>Protección especializada para infraestructuras definidas por software</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Capacidad de contención inmediata de incidentes de seguridad</li>
+                                <li>Minimización de superficie de ataque mediante aislamiento granular</li>
+                                <li>Implementación efectiva del principio de privilegio mínimo</li>
+                                <li>Prevención de propagación lateral de amenazas persistentes</li>
+                                <li>Adaptabilidad dinámica a cambios en infraestructura virtualizada</li>
+                                <li>Telemetría detallada para análisis forense y compliance</li>
+                                <li>Protección unificada para entornos multi-cloud y híbridos</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Complejidad de gestión</li>
+                                <li>Curva de aprendizaje pronunciada</li>
+                                <li>Posible impacto en rendimiento</li>
+                                <li>Requiere mapeo detallado de aplicaciones</li>
+                                <li>Costo elevado</li>
+                                <li>Posibles problemas de compatibilidad</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>VMware NSX</li>
+                                <li>Cisco Tetration</li>
+                                <li>Illumio Adaptive Security Platform</li>
+                                <li>Guardicore Centra</li>
+                                <li>Palo Alto VM-Series</li>
+                                <li>Akamai Microsegmentation</li>
+                                <li>Zscaler Workload Segmentation</li>
+                            </ul>
+                            <div class="mt-2">
+                                <span class="tag tag-high">Complejidad: Alta</span>
+                                <span class="tag tag-high">Costo: Alto</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="w-full mb-8">
+                <thead>
+                    <tr>
+                        <th colspan="6" class="section-title text-lg">SISTEMAS DE PREVENCIÓN DE INTRUSIONES (IPS)</th>
+                    </tr>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Descripción</th>
+                        <th>Características Diferenciadoras</th>
+                        <th>Ventajas</th>
+                        <th>Desventajas</th>
+                        <th>Ejemplos Reales</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="font-medium">IPS basado en Red (NIPS)</td>
+                        <td>Sistema de protección activa implementado en línea con el flujo de datos que ejecuta supervisión continua del tráfico de red y aplica medidas de mitigación automática en tiempo real, interceptando y bloqueando comunicaciones maliciosas mediante análisis inline y respuesta inmediata a amenazas detectadas.</td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Despliegue inline con interceptación directa del flujo de datos</li>
+                                <li>Capacidades de enforcement y bloqueo activo en tiempo real</li>
+                                <li>Protección a nivel de infraestructura de red con cobertura perimetral</li>
+                                <li>Implementación de Deep Packet Inspection (DPI) para análisis granular</li>
+                                <li>Funcionalidades de normalización y sanitización de tráfico</li>
+                                <li>Capacidades de reconstrucción y correlación de sesiones TCP/UDP</li>
+                                <li>Análisis multi-protocolo con validación de conformidad</li>
+                                <li>Sistema de respuesta activa con capacidades de remediation automática</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Neutralización automática de amenazas sin intervención humana</li>
+                                <li>Capacidad de protección preventiva y proactiva</li>
+                                <li>Cobertura integral de segmentos de red completos</li>
+                                <li>Mitigación instantánea con zero-delay response</li>
+                                <li>Administración centralizada con economías de escala</li>
+                                <li>Protección especializada contra vectores de ataque conocidos</li>
+                                <li>Capacidad de contención inmediata de incidentes de seguridad</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Punto único de fallo potencial</li>
+                                <li>Riesgo de bloqueo de tráfico legítimo</li>
+                                <li>Impacto en rendimiento de red</li>
+                                <li>Latencia adicional</li>
+                                <li>Configuración compleja</li>
+                                <li>Falsos positivos críticos</li>
+                                <li>Dificultad con tráfico cifrado</li>
+                                <li>Bypass en caso de sobrecarga</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Snort (modo IPS)</li>
+                                <li>Cisco Firepower IPS</li>
+                                <li>Suricata (modo IPS)</li>
+                                <li>Trend Micro TippingPoint</li>
+                                <li>Palo Alto Networks (modo IPS)</li>
+                                <li>Check Point IPS Blade</li>
+                                <li>Fortinet FortiGate IPS</li>
+                                <li>McAfee Network Security Platform</li>
+                            </ul>
+                            <div class="mt-2">
+                                <span class="tag tag-high">Complejidad: Alta</span>
+                                <span class="tag tag-high">Costo: Alto</span>
+                                <span class="tag tag-high">Riesgo: Alto</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">IPS basado en Host (HIPS)</td>
+                        <td>Solución de protección endpoint que opera directamente en sistemas individuales, implementando monitoreo local del sistema operativo y aplicando controles de seguridad granulares para detectar y neutralizar actividades maliciosas específicas del host mediante análisis comportamental y bloqueo proactivo en tiempo real.</td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Supervisión integral a nivel de kernel y sistema operativo</li>
+                                <li>Gobierno y control granular de aplicaciones y procesos ejecutables</li>
+                                <li>Protección de espacios de memoria y estructuras del filesystem</li>
+                                <li>Capacidades de exploit prevention y mitigation avanzada</li>
+                                <li>Implementación de behavioral analysis y anomaly detection</li>
+                                <li>Sistema de enforcement para bloqueo de modificaciones no autorizadas</li>
+                                <li>Protección contra escalation attacks y privilege abuse</li>
+                                <li>Análisis forense de system calls y API interactions</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Protección contextual específica y adaptada por endpoint</li>
+                                <li>Capacidad operativa independiente del estado de cifrado de comunicaciones</li>
+                                <li>Mitigación especializada de exploits locales y ataques dirigidos</li>
+                                <li>Defensa contra insider threats y amenazas internas</li>
+                                <li>Protección contra malware avanzado y técnicas de evasión</li>
+                                <li>Capacidad de protección offline sin dependencia de conectividad</li>
+                                <li>Telemetría detallada para investigación forense y compliance</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Sobrecarga significativa del sistema</li>
+                                <li>Gestión compleja en grandes entornos</li>
+                                <li>Posibles conflictos con aplicaciones</li>
+                                <li>Requiere instalación en cada sistema</li>
+                                <li>Mantenimiento distribuido</li>
+                                <li>Posible impacto en experiencia de usuario</li>
+                                <li>Vulnerabilidad si se compromete primero</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>McAfee Host IPS</li>
+                                <li>Symantec Endpoint Protection</li>
+                                <li>CrowdStrike Falcon</li>
+                                <li>Carbon Black</li>
+                                <li>Trend Micro Deep Security</li>
+                                <li>Sophos Intercept X</li>
+                                <li>Microsoft Defender for Endpoint</li>
+                                <li>Palo Alto Traps/Cortex XDR</li>
+                            </ul>
+                            <div class="mt-2">
+                                <span class="tag tag-medium">Complejidad: Media-Alta</span>
+                                <span class="tag tag-medium">Costo: Variable</span>
+                                <span class="tag tag-medium">Riesgo: Medio</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">IPS basado en Contenido</td>
+                        <td>Tecnología de protección avanzada que ejecuta análisis exhaustivo del payload completo de comunicaciones, inspeccionando datos a nivel de aplicación para identificar y neutralizar amenazas embebidas en contenido mediante técnicas de deep content inspection y análisis semántico de información transmitida.</td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Implementación de Deep Packet Inspection (DPI) con análisis semántico</li>
+                                <li>Capacidades de análisis y decodificación de protocolos de aplicación</li>
+                                <li>Funcionalidades de normalización y sanitización de flujos de datos</li>
+                                <li>Algoritmos de decodificación y parsing de protocolos complejos</li>
+                                <li>Análisis forense de archivos embebidos y contenido multimedia</li>
+                                <li>Detección de código malicioso y shellcode oculto</li>
+                                <li>Validación de integridad y conformidad de formatos de datos</li>
+                                <li>Análisis comportamental de aplicaciones y servicios de red</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Identificación de amenazas stealth y ataques encubiertos</li>
+                                <li>Protección especializada contra application-layer attacks</li>
+                                <li>Capacidad de identificación de datos maliciosos y payloads malformados</li>
+                                <li>Prevención efectiva de data exfiltration y data leakage</li>
+                                <li>Detección de malware durante transferencias de archivos</li>
+                                <li>Mitigación de injection attacks y code execution vulnerabilities</li>
+                                <li>Defensa contra amenazas avanzadas y técnicas de obfuscation</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Alto consumo de recursos</li>
+                                <li>Latencia significativa</li>
+                                <li>Problemas con tráfico cifrado</li>
+                                <li>Complejidad de configuración</li>
+                                <li>Posibles falsos positivos</li>
+                                <li>Dificultad con protocolos propietarios</li>
+                                <li>Requiere actualizaciones frecuentes</li>
+                                <li>Limitaciones con tráfico de alto volumen</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Palo Alto Networks (modo IPS)</li>
+                                <li>Check Point IPS</li>
+                                <li>Fortinet FortiGate IPS</li>
+                                <li>Cisco Firepower NGIPS</li>
+                                <li>F5 Advanced WAF</li>
+                                <li>Trend Micro Deep Discovery Inspector</li>
+                                <li>Symantec Advanced Threat Protection</li>
+                            </ul>
+                            <div class="mt-2">
+                                <span class="tag tag-high">Complejidad: Alta</span>
+                                <span class="tag tag-high">Costo: Alto</span>
+                                <span class="tag tag-medium">Riesgo: Medio-Alto</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">IPS basado en Protocolo</td>
+                        <td>Sistema especializado de protección que se enfoca en validación y enforcement de estándares de protocolos específicos, implementando análisis de conformidad normativa y bloqueando comunicaciones que exhiben desviaciones de especificaciones RFC o presentan anomalías en la implementación de stack de protocolos.</td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Validación exhaustiva de conformidad con especificaciones de protocolos RFC</li>
+                                <li>Detección especializada de anomalías y malformaciones protocolares</li>
+                                <li>Especialización vertical por familia de protocolos específicos</li>
+                                <li>Capacidades de normalización y canonicalización de tráfico</li>
+                                <li>Análisis de state machines y secuencias de comunicación</li>
+                                <li>Verificación de integridad de campos, headers y estructuras de datos</li>
+                                <li>Detección de manipulation attacks y protocol abuse</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Precisión superior en detección de ataques específicos por protocolo</li>
+                                <li>Identificación efectiva de evasion techniques y protocol manipulation</li>
+                                <li>Protección robusta contra malformed packets y corruption attacks</li>
+                                <li>Defensa especializada contra protocol-specific vulnerabilities</li>
+                                <li>Minimización de false positives mediante análisis contextual</li>
+                                <li>Protección contra covert channels y tunneling malicioso</li>
+                                <li>Detección avanzada de fragmentation attacks y reassembly abuse</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Cobertura limitada a protocolos específicos</li>
+                                <li>Requiere conocimiento profundo de protocolos</li>
+                                <li>Posibles problemas con implementaciones no estándar</li>
+                                <li>Actualización constante para nuevos protocolos</li>
+                                <li>Complejidad de configuración</li>
+                                <li>Posible impacto en rendimiento</li>
+                                <li>Limitaciones con protocolos propietarios</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Cisco Next-Generation IPS</li>
+                                <li>Juniper Networks IPS</li>
+                                <li>F5 Networks ASM</li>
+                                <li>Radware DefensePro</li>
+                                <li>A10 Thunder TPS</li>
+                                <li>Imperva SecureSphere</li>
+                                <li>Arbor Networks APS</li>
+                            </ul>
+                            <div class="mt-2">
+                                <span class="tag tag-high">Complejidad: Alta</span>
+                                <span class="tag tag-medium">Costo: Medio-Alto</span>
+                                <span class="tag tag-medium">Riesgo: Medio</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">IPS basado en la Nube</td>
+                        <td>Arquitectura de protección distribuida implementada como servicio cloud-native que proporciona capacidades de prevención de intrusiones para recursos geográficamente dispersos, ofreciendo enforcement de seguridad mediante modelo SaaS sin requerir infraestructura física dedicada en las instalaciones del cliente.</td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Despliegue virtualizado sin dependencia de hardware físico local</li>
+                                <li>Integración con global threat intelligence feeds y collective security</li>
+                                <li>Capacidades de auto-scaling y elasticidad operativa</li>
+                                <li>Actualizaciones centralizadas con deployment automatizado</li>
+                                <li>Protección distribuida para workloads multi-site</li>
+                                <li>Procesamiento de big data analytics para threat correlation</li>
+                                <li>Integración nativa con cloud services y APIs empresariales</li>
+                                <li>Protección especializada para remote workforce y mobile users</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Protección unificada para infraestructuras distribuidas y híbridas</li>
+                                <li>Reducción significativa de capital expenditure en infraestructura</li>
+                                <li>Respuesta acelerada ante threat intelligence emergente</li>
+                                <li>Escalabilidad dinámica con adaptación automática a demanda</li>
+                                <li>Mantenimiento automatizado con zero-touch operations</li>
+                                <li>Beneficios de collective intelligence y shared security insights</li>
+                                <li>Protección nativa para usuarios distribuidos y endpoints móviles</li>
+                                <li>Time-to-deployment acelerado con implementación inmediata</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Dependencia de conectividad a Internet</li>
+                                <li>Latencia potencial</li>
+                                <li>Preocupaciones de privacidad/soberanía de datos</li>
+                                <li>Costos acumulativos a largo plazo</li>
+                                <li>Control limitado sobre la infraestructura</li>
+                                <li>Posibles problemas de cumplimiento normativo</li>
+                                <li>Vendor lock-in</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Zscaler Cloud IPS</li>
+                                <li>Akamai Enterprise Threat Protector</li>
+                                <li>Cloudflare Magic Transit</li>
+                                <li>AWS Network Firewall (modo IPS)</li>
+                                <li>Azure DDoS Protection</li>
+                                <li>Cisco Umbrella</li>
+                                <li>Palo Alto Prisma Cloud</li>
+                                <li>Netskope Cloud IPS</li>
+                            </ul>
+                            <div class="mt-2">
+                                <span class="tag tag-medium">Complejidad: Media</span>
+                                <span class="tag tag-medium">Costo: Variable</span>
+                                <span class="tag tag-medium">Riesgo: Medio</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">IPS Adaptativo</td>
+                        <td>Plataforma de protección inteligente de próxima generación que implementa ajuste dinámico de políticas de seguridad mediante algoritmos de machine learning y correlación contextual, optimizando continuamente sus capacidades de detección y enforcement basándose en threat intelligence, análisis comportamental y feedback operacional.</td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Implementación de dynamic policy adjustment mediante algoritmos adaptativos</li>
+                                <li>Capacidades de continuous learning y knowledge base evolution</li>
+                                <li>Análisis contextual multidimensional con environmental awareness</li>
+                                <li>Integración con múltiples threat intelligence sources y external feeds</li>
+                                <li>Sistema de proportional response con threat-level correlation</li>
+                                <li>Adaptación automática a traffic patterns y behavioral baselines</li>
+                                <li>Correlación avanzada de eventos con temporal analysis</li>
+                                <li>Automatización de response actions y remediation workflows</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Minimización progresiva de false positives mediante adaptive tuning</li>
+                                <li>Flexibilidad evolutiva ante cambios en infrastructure y threat landscape</li>
+                                <li>Optimización de response mechanisms con threat-appropriate actions</li>
+                                <li>Mejora continua de protection efficacy mediante self-optimization</li>
+                                <li>Balance dinámico entre security enforcement y operational performance</li>
+                                <li>Capacidades de advanced threat hunting y predictive analytics</li>
+                                <li>Reducción de operational overhead mediante autonomous operations</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Extrema complejidad técnica</li>
+                                <li>Costos muy elevados</li>
+                                <li>Requiere personal altamente especializado</li>
+                                <li>Posible comportamiento impredecible</li>
+                                <li>Dificultad para auditar decisiones</li>
+                                <li>Alto consumo de recursos</li>
+                                <li>Periodo inicial de ajuste extenso</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Darktrace Antigena</li>
+                                <li>Cisco Secure IPS con SecureX</li>
+                                <li>Palo Alto Cortex XDR</li>
+                                <li>FireEye Adaptive Defense</li>
+                                <li>Trend Micro XDR</li>
+                                <li>Fortinet FortiAI</li>
+                                <li>Check Point Infinity</li>
+                            </ul>
+                            <div class="mt-2">
+                                <span class="tag tag-high">Complejidad: Muy Alta</span>
+                                <span class="tag tag-high">Costo: Muy Alto</span>
+                                <span class="tag tag-medium">Riesgo: Variable</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="w-full mb-8">
+                <thead>
+                    <tr>
+                        <th colspan="6" class="section-title text-lg">SISTEMAS DE DETECCIÓN DE INTRUSIONES (IDS)</th>
+                    </tr>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Descripción</th>
+                        <th>Características Diferenciadoras</th>
+                        <th>Ventajas</th>
+                        <th>Desventajas</th>
+                        <th>Ejemplos Reales</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="font-medium">IDS basado en Red (NIDS)</td>
+                        <td>Sistema de vigilancia de seguridad que efectúa análisis continuo y pasivo del flujo de información en infraestructuras de comunicación, examinando patrones de tráfico mediante técnicas de inspección no intrusiva desde puntos de observación estratégicamente distribuidos en la topología de red.</td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Supervisión integral de flujos de datos en segmentos de red completos</li>
+                                <li>Despliegue estratégico en chokepoints y puntos de agregación críticos</li>
+                                <li>Operación en modo observacional sin interferencia en comunicaciones</li>
+                                <li>Implementación mediante técnicas de port mirroring y replicación de tráfico</li>
+                                <li>Capacidades de decodificación y análisis multi-protocolo</li>
+                                <li>Funcionalidades de reconstrucción y correlación de sesiones de comunicación</li>
+                                <li>Identificación de desviaciones y malformaciones en protocolos de red</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Operación transparente sin degradación del throughput de red</li>
+                                <li>Capacidad de identificación de vectores de ataque a nivel de infraestructura</li>
+                                <li>Cobertura panorámica con visibilidad de segmento completo</li>
+                                <li>Implementación sin modificaciones en arquitectura existente</li>
+                                <li>Centralización de análisis con economías de escala operativa</li>
+                                <li>Identificación de patrones de ataque distribuido y coordinado</li>
+                                <li>Autonomía operativa independiente de sistemas endpoints</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>No analiza tráfico cifrado</li>
+                                <li>Falsos positivos frecuentes</li>
+                                <li>Respuesta manual a alertas</li>
+                                <li>Dificultad con redes de alto tráfico</li>
+                                <li>Problemas con paquetes fragmentados</li>
+                                <li>Ineficaz contra ataques de día cero</li>
+                                <li>Requiere ubicación estratégica</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Snort (modo IDS)</li>
+                                <li>Suricata (modo IDS)</li>
+                                <li>Zeek (anteriormente Bro)</li>
+                                <li>Cisco Secure IDS</li>
+                                <li>Darktrace Enterprise Immune System</li>
+                                <li>ExtraHop Reveal(x)</li>
+                                <li>Security Onion</li>
+                            </ul>
+                            <div class="mt-2">
+                                <span class="tag tag-medium">Complejidad: Media</span>
+                                <span class="tag tag-medium">Costo: Medio-Alto</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">IDS basado en Host (HIDS)</td>
+                        <td>Solución de monitoreo de seguridad implementada directamente en sistemas endpoints que realiza supervisión local de actividades del sistema operativo, efectuando análisis forense en tiempo real de eventos, modificaciones de archivos críticos y comportamientos anómalos de procesos dentro del contexto específico del host.</td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Supervisión continua de integridad de archivos y directorios críticos del sistema</li>
+                                <li>Procesamiento y correlación de eventos de auditoría del sistema operativo</li>
+                                <li>Identificación de alteraciones no autorizadas en configuraciones y binarios</li>
+                                <li>Implementación de checksums criptográficos para verificación de integridad</li>
+                                <li>Análisis de patrones de comportamiento de procesos y servicios</li>
+                                <li>Capacidades de detección de software malicioso rootkit y stealth</li>
+                                <li>Monitoreo de actividades de escalada de privilegios y accesos anómalos</li>
+                                <li>Funcionalidades de auditoría granular de recursos y permisos del sistema</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Identificación específica de vectores de ataque localizados</li>
+                                <li>Supervisión contextual adaptada a características del endpoint</li>
+                                <li>Capacidad operativa independiente del estado de cifrado de comunicaciones</li>
+                                <li>Detección especializada de amenazas internas y insider threats</li>
+                                <li>Localización precisa y determinística del sistema comprometido</li>
+                                <li>Identificación proactiva de modificaciones maliciosas del sistema</li>
+                                <li>Generación de evidencia forense detallada para investigación de incidentes</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Sobrecarga en sistemas host</li>
+                                <li>Gestión compleja en grandes entornos</li>
+                                <li>Requiere instalación en cada sistema</li>
+                                <li>Vulnerable si el host está comprometido</li>
+                                <li>Mantenimiento distribuido</li>
+                                <li>Posible interferencia con aplicaciones</li>
+                                <li>Visibilidad limitada a nivel de red</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>OSSEC</li>
+                                <li>Tripwire</li>
+                                <li>Wazuh</li>
+                                <li>Samhain</li>
+                                <li>CrowdStrike Falcon (modo detección)</li>
+                                <li>Sagan</li>
+                                <li>Elastic Endpoint Security</li>
+                                <li>LMD (Linux Malware Detect)</li>
+                            </ul>
+                            <div class="mt-2">
+                                <span class="tag tag-medium">Complejidad: Media</span>
+                                <span class="tag tag-medium">Costo: Variable</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">IDS basado en Firmas</td>
+                        <td>Tecnología de detección que emplea metodologías de reconocimiento de patrones mediante comparación con repositorios de signatures maliciosas conocidas, ejecutando correlación exacta entre características de tráfico observado y vectores de ataque previamente catalogados y documentados en bases de datos especializadas.</td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Implementación de repositorios actualizables de patrones de ataque</li>
+                                <li>Capacidad de identificación determinística de amenazas catalogadas</li>
+                                <li>Dependencia de actualizaciones periódicas de base de conocimiento</li>
+                                <li>Algoritmos de matching y correlación de patrones binarios</li>
+                                <li>Taxonomía estructurada de vectores de ataque y vulnerabilidades</li>
+                                <li>Identificación específica de exploits y payloads maliciosos conocidos</li>
+                                <li>Reconocimiento de familias de malware mediante fingerprinting</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Minimización de alertas espurias mediante precisión de detección</li>
+                                <li>Clasificación granular y específica de vectores de amenaza</li>
+                                <li>Optimización de recursos computacionales mediante algoritmos eficientes</li>
+                                <li>Simplicidad operativa con curva de aprendizaje reducida</li>
+                                <li>Identificación confiable de vulnerabilidades y exploits documentados</li>
+                                <li>Categorización detallada para priorización de respuesta</li>
+                                <li>Generación de evidencia forense clara para análisis post-incidente</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Ineficaz contra amenazas desconocidas</li>
+                                <li>Requiere actualizaciones constantes</li>
+                                <li>Vulnerable a variaciones de ataques</li>
+                                <li>No detecta ataques de día cero</li>
+                                <li>Evasión mediante ofuscación</li>
+                                <li>Dependencia del proveedor de firmas</li>
+                                <li>Volumen creciente de firmas</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Snort (modo basado en firmas)</li>
+                                <li>Suricata (modo basado en firmas)</li>
+                                <li>McAfee Network Security Platform</li>
+                                <li>Trend Micro Deep Discovery</li>
+                                <li>Cisco Firepower NIDS</li>
+                                <li>Sourcefire (ahora parte de Cisco)</li>
+                                <li>ET Pro Ruleset</li>
+                            </ul>
+                            <div class="mt-2">
+                                <span class="tag tag-low">Complejidad: Baja-Media</span>
+                                <span class="tag tag-medium">Costo: Variable</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">IDS basado en Anomalías</td>
+                        <td>Sistema de detección inteligente que construye modelos de comportamiento baseline mediante técnicas de machine learning y análisis estadístico, identificando desviaciones significativas del comportamiento normal establecido a través de algoritmos de detección de outliers y análisis de tendencias temporales.</td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Implementación de algoritmos de machine learning y análisis estadístico avanzado</li>
+                                <li>Fase de entrenamiento para establecimiento de patrones de comportamiento normal</li>
+                                <li>Capacidad de identificación de amenazas previamente no catalogadas</li>
+                                <li>Técnicas de profiling dinámico y modelado comportamental</li>
+                                <li>Algoritmos de detección de outliers y análisis de desviaciones estadísticas</li>
+                                <li>Mecanismos de adaptación automática a cambios ambientales</li>
+                                <li>Identificación de patrones de comportamiento anómalo emergente</li>
+                                <li>Capacidades de análisis temporal y correlación de tendencias</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Identificación proactiva de amenazas zero-day y ataques emergentes</li>
+                                <li>Flexibilidad adaptativa ante cambios en patrones operacionales</li>
+                                <li>Independencia operativa de bases de datos de signatures</li>
+                                <li>Capacidad especializada para detección de amenazas internas</li>
+                                <li>Identificación de comportamientos sospechosos no documentados previamente</li>
+                                <li>Mejora continua mediante algoritmos de aprendizaje automático</li>
+                                <li>Detección especializada de Advanced Persistent Threats (APT)</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Alta tasa de falsos positivos</li>
+                                <li>Periodo de entrenamiento extenso</li>
+                                <li>Complejidad de configuración</li>
+                                <li>Dificultad para establecer umbrales</li>
+                                <li>Cambios legítimos generan alertas</li>
+                                <li>Requiere ajuste constante</li>
+                                <li>Necesita personal especializado</li>
+                                <li>Alto consumo de recursos</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Darktrace</li>
+                                <li>ExtraHop Reveal(x)</li>
+                                <li>Vectra AI</li>
+                                <li>Cisco Stealthwatch</li>
+                                <li>Awake Security</li>
+                                <li>Aruba IntroSpect</li>
+                                <li>IBM QRadar User Behavior Analytics</li>
+                                <li>LogRhythm UEBA</li>
+                            </ul>
+                            <div class="mt-2">
+                                <span class="tag tag-high">Complejidad: Alta</span>
+                                <span class="tag tag-high">Costo: Alto</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">IDS Híbrido</td>
+                        <td>Arquitectura de detección convergente que integra múltiples metodologías complementarias de análisis de seguridad, combinando capacidades de reconocimiento de patrones, detección de anomalías y otros mecanismos especializados para maximizar la efectividad de detección mediante enfoques sinérgicos y correlación cruzada de eventos.</td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Convergencia de motores de detección basados en signatures y análisis comportamental</li>
+                                <li>Capacidad de integración entre sistemas NIDS y HIDS en arquitectura unificada</li>
+                                <li>Algoritmos de correlación de eventos y fusión de datos multi-fuente</li>
+                                <li>Análisis contextual mediante procesamiento de información agregada</li>
+                                <li>Implementación de múltiples engines de detección especializados</li>
+                                <li>Mecanismos de validación cruzada y verificación de alertas</li>
+                                <li>Integración con feeds de threat intelligence y conocimiento externo</li>
+                                <li>Capacidades de análisis behavioral y pattern recognition combinados</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Maximización de precisión mediante validación cruzada de detecciones</li>
+                                <li>Minimización de falsos positivos através de correlación multi-motor</li>
+                                <li>Amplitud de cobertura para amenazas conocidas y emergentes</li>
+                                <li>Versatilidad de detección independiente del vector de ataque</li>
+                                <li>Flexibilidad adaptativa para múltiples escenarios operacionales</li>
+                                <li>Visibilidad integral con perspectiva panorámica de seguridad</li>
+                                <li>Implementación de defensa en profundidad mediante múltiples capas</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Mayor complejidad de implementación</li>
+                                <li>Costos elevados</li>
+                                <li>Requiere integración de múltiples sistemas</li>
+                                <li>Necesidad de personal especializado</li>
+                                <li>Posible sobrecarga de alertas</li>
+                                <li>Configuración compleja</li>
+                                <li>Mayor consumo de recursos</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Suricata (modo híbrido)</li>
+                                <li>AlienVault OSSIM</li>
+                                <li>IBM QRadar</li>
+                                <li>Splunk Enterprise Security</li>
+                                <li>LogRhythm NextGen SIEM</li>
+                                <li>FireEye Network Security</li>
+                                <li>Palo Alto Networks Cortex XDR</li>
+                                <li>Elastic Security</li>
+                            </ul>
+                            <div class="mt-2">
+                                <span class="tag tag-high">Complejidad: Alta</span>
+                                <span class="tag tag-high">Costo: Alto</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">IDS basado en Aprendizaje Profundo</td>
+                        <td>Plataforma de detección de seguridad de vanguardia que implementa arquitecturas de redes neuronales profundas y algoritmos de inteligencia artificial avanzada para identificar patrones complejos y correlaciones sutiles indicativas de actividad maliciosa, con capacidades de autoaprendizaje y evolución adaptativa continua.</td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Implementación de arquitecturas de deep learning y redes neuronales multicapa</li>
+                                <li>Capacidades de unsupervised learning para descubrimiento autónomo de patrones</li>
+                                <li>Procesamiento de datasets masivos mediante técnicas de big data analytics</li>
+                                <li>Algoritmos de feature extraction automática y representación latente</li>
+                                <li>Detección de micro-anomalías y correlaciones imperceptibles</li>
+                                <li>Mecanismos de continuous learning y adaptación automática</li>
+                                <li>Capacidades de predictive analytics y forecasting de amenazas</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Identificación superior de amenazas sofisticadas y ataques stealth</li>
+                                <li>Evolución autónoma ante nuevos vectores de ataque emergentes</li>
+                                <li>Optimización progresiva de precisión mediante algoritmos adaptativos</li>
+                                <li>Reconocimiento de patrones multidimensionales complejos</li>
+                                <li>Análisis contextual avanzado con comprensión semántica</li>
+                                <li>Capacidades de threat hunting proactivo y predictivo</li>
+                                <li>Reducción de dependencia en expertise humano especializado</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Extremadamente alto consumo de recursos</li>
+                                <li>Requiere hardware especializado (GPUs)</li>
+                                <li>"Caja negra" - difícil explicabilidad</li>
+                                <li>Entrenamiento inicial extenso</li>
+                                <li>Costos muy elevados</li>
+                                <li>Complejidad técnica extrema</li>
+                                <li>Posibles sesgos en el entrenamiento</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-disc pl-5">
+                                <li>Darktrace Antigena</li>
+                                <li>Deep Instinct</li>
+                                <li>Blue Hexagon</li>
+                                <li>Cylance AI</li>
+                                <li>SentinelOne Singularity</li>
+                                <li>MixMode AI</li>
+                                <li>Lastline Defender (ahora VMware)</li>
+                            </ul>
+                            <div class="mt-2">
+                                <span class="tag tag-high">Complejidad: Muy Alta</span>
+                                <span class="tag tag-high">Costo: Muy Alto</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            
+        </div>
+
+        <div class="comparison-section">
+            <h3 class="text-3xl font-bold mb-4 text-blue-800 drop-shadow-lg text-center">Análisis Comparativo </h3>
+            
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold mb-2 text-blue-700 drop-shadow-lg text-center">Comparación de Capacidades</h3>
+                <table class="w-full border">
+                    <thead>
+                        <tr class="bg-blue-100">
+                            <th class="border p-2">Característica</th>
+                            <th class="border p-2">Firewall</th>
+                            <th class="border p-2">IPS</th>
+                            <th class="border p-2">IDS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border p-2 font-medium">Modo de operación</td>
+                            <td class="border p-2">Preventivo (bloqueo)</td>
+                            <td class="border p-2">Preventivo (bloqueo)</td>
+                            <td class="border p-2">Detectivo (monitoreo)</td>
+                        </tr>
+                        <tr>
+                            <td class="border p-2 font-medium">Posición en la red</td>
+                            <td class="border p-2">En línea (gateway)</td>
+                            <td class="border p-2">En línea (activo)</td>
+                            <td class="border p-2">Fuera de banda (pasivo)</td>
+                        </tr>
+                        <tr>
+                            <td class="border p-2 font-medium">Profundidad de análisis</td>
+                            <td class="border p-2">Variable (L3-L7 según tipo)</td>
+                            <td class="border p-2">Profundo (contenido completo)</td>
+                            <td class="border p-2">Profundo (contenido completo)</td>
+                        </tr>
+                        <tr>
+                            <td class="border p-2 font-medium">Impacto en rendimiento</td>
+                            <td class="border p-2">Bajo a medio</td>
+                            <td class="border p-2">Medio a alto</td>
+                            <td class="border p-2">Ninguno (pasivo)</td>
+                        </tr>
+                        <tr>
+                            <td class="border p-2 font-medium">Detección de amenazas conocidas</td>
+                            <td class="border p-2">Limitada (NGFW: buena)</td>
+                            <td class="border p-2">Excelente</td>
+                            <td class="border p-2">Excelente</td>
+                        </tr>
+                        <tr>
+                            <td class="border p-2 font-medium">Detección de amenazas desconocidas</td>
+                            <td class="border p-2">Pobre (NGFW: moderada)</td>
+                            <td class="border p-2">Moderada a buena</td>
+                            <td class="border p-2">Moderada a buena</td>
+                        </tr>
+                        <tr>
+                            <td class="border p-2 font-medium">Respuesta automática</td>
+                            <td class="border p-2">Sí (basada en reglas)</td>
+                            <td class="border p-2">Sí (bloqueo activo)</td>
+                            <td class="border p-2">No (solo alertas)</td>
+                        </tr>
+                        <tr>
+                            <td class="border p-2 font-medium">Complejidad de implementación</td>
+                            <td class="border p-2">Baja a media</td>
+                            <td class="border p-2">Alta</td>
+                            <td class="border p-2">Media</td>
+                        </tr>
+                        <tr>
+                            <td class="border p-2 font-medium">Riesgo de interrupción</td>
+                            <td class="border p-2">Bajo</td>
+                            <td class="border p-2">Alto</td>
+                            <td class="border p-2">Ninguno</td>
+                        </tr>
+                        <tr>
+                            <td class="border p-2 font-medium">Costo relativo</td>
+                            <td class="border p-2">Bajo a alto</td>
+                            <td class="border p-2">Alto a muy alto</td>
+                            <td class="border p-2">Medio a alto</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br></br>
+
+            <div class="mt-8 mb-8">
+                <div class="text-center mt-8 mb-8">
+                    <h3 class="text-3xl font-bold mb-4 text-blue-800 drop-shadow-lg">🛡️ Arquitectura de Seguridad Recomendada</h3>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-100 p-6 rounded-xl shadow-lg border-2 border-blue-200">
+                        <p class="text-lg text-gray-700 leading-relaxed">Una estrategia de <span class="font-bold text-blue-800">defensa en profundidad</span> efectiva combina múltiples tecnologías en capas superpuestas, creando un ecosistema de seguridad robusto que protege desde el perímetro hasta los datos más críticos de la organización.</p>
+                    </div>
+                </div>
+                
+                <!-- Capa 1: Perímetro -->
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl shadow-xl border-l-8 border-blue-500 mb-6 transform hover:scale-105 transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-500 text-white p-3 rounded-full mr-4 shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                        <h4 class="text-2xl font-bold text-blue-700">Capa 1: Perímetro Exterior</h4>
+                    </div>
+                    <p class="text-gray-700 mb-4 italic">La primera línea de defensa que filtra y controla todo el tráfico entrante y saliente de la organización.</p>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold mr-3 mt-1">🔥</span>
+                            <div>
+                                <strong class="text-blue-800">Firewall de Nueva Generación (NGFW) en modo IPS:</strong>
+                                <span class="text-gray-700"> Inspección profunda de paquetes con capacidades avanzadas de detección y prevención de amenazas.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold mr-3 mt-1">⚡</span>
+                            <div>
+                                <strong class="text-blue-800">Protección DDoS:</strong>
+                                <span class="text-gray-700"> Mitigación de ataques de denegación de servicio distribuidos para mantener la disponibilidad.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold mr-3 mt-1">🌐</span>
+                            <div>
+                                <strong class="text-blue-800">Filtrado de contenido web:</strong>
+                                <span class="text-gray-700"> Control granular del acceso a sitios web y categorización de contenido malicioso.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Capa 2: Red -->
+                <div class="bg-gradient-to-br from-teal-50 to-teal-100 p-6 rounded-xl shadow-xl border-l-8 border-teal-600 mb-6 transform hover:scale-105 transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-teal-600 text-white p-3 rounded-full mr-4 shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+                            </svg>
+                        </div>
+                        <h4 class="text-2xl font-bold text-teal-700">Capa 2: Seguridad de Red Interna</h4>
+                    </div>
+                    <p class="text-gray-700 mb-4 italic">Control y monitoreo del tráfico interno para prevenir movimientos laterales de amenazas.</p>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="bg-teal-200 text-teal-800 px-3 py-1 rounded-full text-sm font-semibold mr-3 mt-1">🔒</span>
+                            <div>
+                                <strong class="text-teal-800">Segmentación mediante firewalls internos:</strong>
+                                <span class="text-gray-700"> División lógica de la red en zonas de seguridad para aislar recursos críticos.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-teal-200 text-teal-800 px-3 py-1 rounded-full text-sm font-semibold mr-3 mt-1">👁️</span>
+                            <div>
+                                <strong class="text-teal-800">IDS/IPS para monitoreo de tráfico este-oeste:</strong>
+                                <span class="text-gray-700"> Supervisión continua del tráfico lateral entre sistemas internos.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-teal-200 text-teal-800 px-3 py-1 rounded-full text-sm font-semibold mr-3 mt-1">🎯</span>
+                            <div>
+                                <strong class="text-teal-800">Microsegmentación para entornos críticos:</strong>
+                                <span class="text-gray-700"> Aislamiento granular de aplicaciones y servicios de alta criticidad.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Capa 3: Endpoint -->
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl shadow-xl border-l-8 border-blue-500 mb-6 transform hover:scale-105 transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-500 text-white p-3 rounded-full mr-4 shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <h4 class="text-2xl font-bold text-blue-700">Capa 3: Protección de Endpoints</h4>
+                    </div>
+                    <p class="text-gray-700 mb-4 italic">Seguridad directa en dispositivos finales para detectar y neutralizar amenazas locales.</p>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold mr-3 mt-1">🛡️</span>
+                            <div>
+                                <strong class="text-blue-800">HIPS/EDR en sistemas críticos:</strong>
+                                <span class="text-gray-700"> Detección y respuesta avanzada para comportamientos anómalos en endpoints.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold mr-3 mt-1">🔥</span>
+                            <div>
+                                <strong class="text-blue-800">Firewall personal:</strong>
+                                <span class="text-gray-700"> Control granular del tráfico de red a nivel de sistema operativo individual.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold mr-3 mt-1">📱</span>
+                            <div>
+                                <strong class="text-blue-800">Control de aplicaciones:</strong>
+                                <span class="text-gray-700"> Whitelisting y control de ejecución de aplicaciones autorizadas únicamente.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Capa 4: Datos -->
+                <div class="bg-gradient-to-br from-teal-50 to-teal-100 p-6 rounded-xl shadow-xl border-l-8 border-teal-600 transform hover:scale-105 transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-teal-600 text-white p-3 rounded-full mr-4 shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                        <h4 class="text-2xl font-bold text-teal-700">Capa 4: Protección de Datos</h4>
+                    </div>
+                    <p class="text-gray-700 mb-4 italic">El núcleo de la seguridad: protección directa de la información y activos más valiosos.</p>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="bg-teal-200 text-teal-800 px-3 py-1 rounded-full text-sm font-semibold mr-3 mt-1">🚫</span>
+                            <div>
+                                <strong class="text-teal-800">DLP (Prevención de Pérdida de Datos):</strong>
+                                <span class="text-gray-700"> Identificación, monitoreo y protección de datos sensibles contra filtración.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-teal-200 text-teal-800 px-3 py-1 rounded-full text-sm font-semibold mr-3 mt-1">🔐</span>
+                            <div>
+                                <strong class="text-teal-800">Cifrado:</strong>
+                                <span class="text-gray-700"> Protección criptográfica de datos en reposo, tránsito y procesamiento.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-teal-200 text-teal-800 px-3 py-1 rounded-full text-sm font-semibold mr-3 mt-1">🆔</span>
+                            <div>
+                                <strong class="text-teal-800">Control de acceso basado en identidad:</strong>
+                                <span class="text-gray-700"> Gestión granular de permisos mediante autenticación y autorización robusta.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <br></br>
+            
+            <div class="bg-gradient-to-br from-blue-50 to-cyan-100 p-6 rounded-xl shadow-xl border-2 border-blue-300">
+                <div class="text-center mb-6">
+                    <h3 class="text-3xl font-bold mb-4 text-blue-800 drop-shadow-lg">🚀 Tendencias Futuras en Seguridad</h3>
+                    <p class="text-lg text-blue-700 italic">La evolución tecnológica impulsa nuevos paradigmas de protección cibernética</p>
+                </div>
+                
+                <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    <div class="bg-gradient-to-br from-blue-100 to-blue-200 p-4 rounded-lg shadow-lg border border-blue-300 transform hover:scale-105 transition-all duration-300">
+                        <div class="flex items-start mb-3">
+                            <div class="bg-blue-600 text-white p-2 rounded-full mr-3 flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-blue-800 mb-2">Seguridad impulsada por IA</h4>
+                                <p class="text-sm text-blue-700">Mayor adopción de algoritmos de aprendizaje automático y redes neuronales para detección predictiva de amenazas.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-cyan-100 to-cyan-200 p-4 rounded-lg shadow-lg border border-cyan-300 transform hover:scale-105 transition-all duration-300">
+                        <div class="flex items-start mb-3">
+                            <div class="bg-cyan-600 text-white p-2 rounded-full mr-3 flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-cyan-800 mb-2">Convergencia de tecnologías</h4>
+                                <p class="text-sm text-cyan-700">Integración de firewall, IDS, IPS y otras capacidades en plataformas unificadas de seguridad.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-blue-100 to-blue-200 p-4 rounded-lg shadow-lg border border-blue-300 transform hover:scale-105 transition-all duration-300">
+                        <div class="flex items-start mb-3">
+                            <div class="bg-blue-600 text-white p-2 rounded-full mr-3 flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-blue-800 mb-2">Seguridad Zero Trust</h4>
+                                <p class="text-sm text-blue-700">Evolución hacia modelos que no confían en ningún tráfico, independientemente de su origen.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-cyan-100 to-cyan-200 p-4 rounded-lg shadow-lg border border-cyan-300 transform hover:scale-105 transition-all duration-300">
+                        <div class="flex items-start mb-3">
+                            <div class="bg-cyan-600 text-white p-2 rounded-full mr-3 flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-cyan-800 mb-2">Seguridad como servicio</h4>
+                                <p class="text-sm text-cyan-700">Crecimiento de soluciones basadas en la nube con capacidades avanzadas accesibles para organizaciones de todos los tamaños.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-blue-100 to-blue-200 p-4 rounded-lg shadow-lg border border-blue-300 transform hover:scale-105 transition-all duration-300">
+                        <div class="flex items-start mb-3">
+                            <div class="bg-blue-600 text-white p-2 rounded-full mr-3 flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-blue-800 mb-2">Automatización y orquestación</h4>
+                                <p class="text-sm text-blue-700">Mayor integración con plataformas SOAR para respuesta automatizada a incidentes.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-cyan-100 to-cyan-200 p-4 rounded-lg shadow-lg border border-cyan-300 transform hover:scale-105 transition-all duration-300">
+                        <div class="flex items-start mb-3">
+                            <div class="bg-cyan-600 text-white p-2 rounded-full mr-3 flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 117.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-cyan-800 mb-2">Protección de entornos IoT</h4>
+                                <p class="text-sm text-cyan-700">Soluciones especializadas para dispositivos con recursos limitados y protocolos específicos.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 p-4 bg-blue-100 rounded-lg border border-blue-300">
+                    <p class="text-center text-blue-800 font-medium italic">
+                        🔮 "El futuro de la seguridad cibernética se construye hoy con tecnologías inteligentes y adaptativas"
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="references mt-8">
+            <h3 class="text-3xl font-bold mb-4 text-blue-800 drop-shadow-lg text-center">Referencias Bibliográficas </h3>
+            <ol class="list-decimal pl-5">
+                <li>Scarfone, K., & Mell, P. (2007). <em>Guide to Intrusion Detection and Prevention Systems (IDPS)</em>. National Institute of Standards and Technology. <a href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-94.pdf" class="text-blue-600 hover:underline" target="_blank">https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-94.pdf</a></li>
+                <li>Stallings, W., & Brown, L. (2022). <em>Computer Security: Principles and Practice</em> (5th ed.). Pearson Education.</li>
+                <li>Cisco Systems. (2023). <em>Cisco Next-Generation Firewall - Cisco</em>. <a href="https://www.cisco.com/c/en/us/products/security/firewalls/index.html" class="text-blue-600 hover:underline" target="_blank">https://www.cisco.com/c/en/us/products/security/firewalls/index.html</a></li>
+                <li>Palo Alto Networks. (2023). <em>What is a Next-Generation Firewall?</em> <a href="https://www.paloaltonetworks.com/cyberpedia/what-is-a-next-generation-firewall-ngfw" class="text-blue-600 hover:underline" target="_blank">https://www.paloaltonetworks.com/cyberpedia/what-is-a-next-generation-firewall-ngfw</a></li>
+                <li>Fortinet. (2023). <em>What is IPS? | Intrusion Prevention System</em>. <a href="https://www.fortinet.com/resources/cyberglossary/ips-intrusion-prevention-system" class="text-blue-600 hover:underline" target="_blank">https://www.fortinet.com/resources/cyberglossary/ips-intrusion-prevention-system</a></li>
+                <li>Check Point Software. (2023). <em>What is an Intrusion Detection System?</em> <a href="https://www.checkpoint.com/cyber-hub/network-security/what-is-an-intrusion-detection-system-ids/" class="text-blue-600 hover:underline" target="_blank">https://www.checkpoint.com/cyber-hub/network-security/what-is-an-intrusion-detection-system-ids/</a></li>
+                <li>Gartner. (2023). <em>Magic Quadrant for Network Firewalls</em>. Gartner Research.</li>
+                <li>Snort. (2023). <em>Snort - Network Intrusion Detection & Prevention System</em>. <a href="https://www.snort.org/" class="text-blue-600 hover:underline" target="_blank">https://www.snort.org/</a></li>
+                <li>Suricata. (2023). <em>Suricata | Open Source IDS / IPS / NSM engine</em>. <a href="https://suricata.io/" class="text-blue-600 hover:underline" target="_blank">https://suricata.io/</a></li>
+                <li>OSSEC. (2023). <em>OSSEC - Open Source HIDS</em>. <a href="https://www.ossec.net/" class="text-blue-600 hover:underline" target="_blank">https://www.ossec.net/</a></li>
+                <li>Zeek. (2023). <em>Zeek Network Security Monitor</em>. <a href="https://zeek.org/" class="text-blue-600 hover:underline" target="_blank">https://zeek.org/</a></li>
+                <li>SANS Institute. (2022). <em>Intrusion Detection and Prevention Systems Cheat Sheet</em>. <a href="https://www.sans.org/security-resources/ids-cheat-sheet" class="text-blue-600 hover:underline" target="_blank">https://www.sans.org/security-resources/ids-cheat-sheet</a></li>
+                <li>Cloudflare. (2023). <em>What is a Firewall? | Types of Firewalls</em>. <a href="https://www.cloudflare.com/learning/security/what-is-a-firewall/" class="text-blue-600 hover:underline" target="_blank">https://www.cloudflare.com/learning/security/what-is-a-firewall/</a></li>
+                <li>VMware. (2023). <em>What is Microsegmentation?</em> <a href="https://www.vmware.com/topics/glossary/content/micro-segmentation.html" class="text-blue-600 hover:underline" target="_blank">https://www.vmware.com/topics/glossary/content/micro-segmentation.html</a></li>
+                <li>Zscaler. (2023). <em>What is Cloud Firewall?</em> <a href="https://www.zscaler.com/resources/security-terms-glossary/what-is-cloud-firewall" class="text-blue-600 hover:underline" target="_blank">https://www.zscaler.com/resources/security-terms-glossary/what-is-cloud-firewall</a></li>
+            </ol>
+        </div>
+    </div>
+
+    <footer class="text-center text-gray-500 text-sm mt-8">
+        <p>CopyRight © 2025 - Joel Rivera</p>
+        <p>Tarea Tabla Comparativa Firewall IPS IDS</p>
+    </footer>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96609014239f824d',t:'MTc1MzY2NTcxOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
